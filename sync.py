@@ -126,6 +126,14 @@ def fetch_incidents() -> list[dict[str, Any]]:
         if source.get("agency") != "DFES":
             continue
 
+        # Skip planned burn-offs (hazard reduction burns) — they're not real incidents
+        title_lower = (props.get("title") or "").lower()
+        event_lower = (props.get("eventType") or "").lower()
+        if "burn off" in title_lower or "burn-off" in title_lower or "burnoff" in title_lower:
+            continue
+        if "burn off" in event_lower or "burn-off" in event_lower or "burnoff" in event_lower:
+            continue
+
         incidents.append({
             "id": str(feature.get("id") or ""),
             "title": props.get("title") or "",
