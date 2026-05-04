@@ -2,10 +2,8 @@ name: Sync DFES incidents to Notion
 
 on:
   schedule:
-    # Every 5 minutes. GitHub Actions cron is best-effort and may drift
-    # under load, occasionally skipping a slot. Fine for archival use.
     - cron: "*/5 * * * *"
-  workflow_dispatch:  # lets you run it manually from the Actions tab
+  workflow_dispatch:
 
 concurrency:
   group: dfes-sync
