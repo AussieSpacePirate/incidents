@@ -27,6 +27,7 @@ jobs:
 
       - name: Run sync
         env:
+          EMERGENCYAPI_KEY: ${{ secrets.EMERGENCYAPI_KEY }}
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
         run: python sync.py
