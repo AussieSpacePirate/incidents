@@ -1,0 +1,32 @@
+name: Sync DFES incidents to Notion
+
+on:
+  schedule:
+    # Every 5 minutes. GitHub Actions cron is best-effort and may drift
+    # under load, occasionally skipping a slot. Fine for archival use.
+    - cron: "*/5 * * * *"
+  workflow_dispatch:  # lets you run it manually from the Actions tab
+
+concurrency:
+  group: dfes-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install deps
+        run: pip install requests
+
+      - name: Run sync
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DB_ID: ${{ secrets.NOTION_DB_ID }}
+        run: python sync.py
